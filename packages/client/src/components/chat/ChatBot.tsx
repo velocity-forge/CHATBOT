@@ -35,9 +35,9 @@ const ChatBot = () => {
    const onSubmit = async ({ prompt }: formData) => {
       try {
          setMessages((prev) => [...prev, { content: prompt, role: 'user' }]);
-         setError('');
          setIsBotTyping(true);
          reset({ prompt: '' });
+         setError('');
          const { data } = await axios.post<chatResponse>('/api/chat', {
             prompt,
             conversationId: conversationId.current,
@@ -64,9 +64,9 @@ const ChatBot = () => {
             {messages.map((message, index) => (
                <div
                   key={index}
+                  ref={index === messages.length - 1 ? lastMessageRef : null}
                   className={`px-3 py-1 rounded-xl
                     ${message.role === 'user' ? 'bg-blue-600 text-white self-end' : 'bg-gray-100 text-black self-start'}`}
-                  ref={index === messages.length - 1 ? lastMessageRef : null}
                >
                   <ReactMarkdown>{message.content}</ReactMarkdown>
                </div>
@@ -90,6 +90,7 @@ const ChatBot = () => {
                   required: true,
                   validate: (data) => data.trim().length > 0,
                })}
+               autoFocus
                className="w-full p-2  border-0 focus:outline-0 resize-none"
                placeholder="Ask me anything..."
                maxLength={1000}
