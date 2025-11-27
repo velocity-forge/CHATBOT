@@ -20,6 +20,7 @@
       "react-dom": "^19.1.1",
       "react-hook-form": "^7.65.0",
       "react-icons": "^5.5.0",
+      "react-loading-skeleton": "^3.5.0",
       "react-markdown": "^10.1.0",
       "tailwind-merge": "^3.3.1",
       "tailwindcss": "^4.1.13"
