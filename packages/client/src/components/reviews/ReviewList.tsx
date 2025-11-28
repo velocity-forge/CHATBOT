@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { HiSparkles } from 'react-icons/hi2';
 import StarRating from './StarRating';
 import { Button } from '../ui/button';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import ReviewSkeleton from './ReviewSkeleton';
+import { reviewsApi } from './reviewsApi';
 
 type Props = {
    productId: number;
@@ -29,28 +29,12 @@ type SummarizeResponse = {
 const ReviewList = ({ productId }: Props) => {
    const reviewsQuery = useQuery<GetReviewsResponse>({
       queryKey: ['reviews', productId],
-      queryFn: () => fetchReviews(),
+      queryFn: () => reviewsApi.fetchReviews(productId),
    });
 
    const summryMutation = useMutation<SummarizeResponse>({
-      mutationFn: () => summarizeReviews(),
+      mutationFn: () => reviewsApi.summarizeReviews(productId),
    });
-
-   const fetchReviews = async () => {
-      const { data } = await axios.get<GetReviewsResponse>(
-         `/api/products/${productId}/reviews`
-      );
-
-      return data;
-   };
-
-   const summarizeReviews = async () => {
-      const { data } = await axios.post<SummarizeResponse>(
-         `/api/products/${productId}/reviews/summarize`
-      );
-
-      return data;
-   };
 
    if (reviewsQuery.isLoading) {
       return (
